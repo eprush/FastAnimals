@@ -7,20 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Configuration settings for the application."""
 
-    environment: str = "development"
-
-    debug: bool = True
-
-    docs_url: str = "/api/docs"
-    openapi_url: str = "/api/openapi.json"
-    api_prefix: str = "/api"
-
-    title: str = "Animal Photo Downloader"
-    version: str = "0.1.0"
-    description: str = "Приложение для показа рандомных фотографий животных"
-
-    allowed_hosts: list[str] | None = ["localhost"]
-
+    cat_api_key: str = "peace_35mbejkg4uuVzdso0012"
     model_config = SettingsConfigDict(env_file=os.getenv("ENV_FILE", ".env"))
 
 
