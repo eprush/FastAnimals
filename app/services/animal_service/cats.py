@@ -8,9 +8,9 @@ import os
 load_dotenv()
 
 api_key = str(os.getenv("CAT_API_KEY"))
-def get_thecatapi_cat() -> bytes:
+def get_thecatapi_cat() -> tuple[str, dict]:
     headers = {"Content-Type": "application/json", "api_key": api_key}
     url = f"https://api.thecatapi.com/v1/images/search"
     response = requests.get(url, headers= headers).json()
-    image_link = response[0]["url"]
-    return requests.get(image_link, headers= headers).content
+    cat_link = response[0].get("url", None) if response else None
+    return cat_link, headers
