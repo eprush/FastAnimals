@@ -2,7 +2,7 @@ from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-from core.config import Settings, get_app_settings
+from app.core.config import Settings, get_app_settings
 from app.services.animal_service.animals import AnimalsService
 from typing import Annotated
 from fastapi import Depends

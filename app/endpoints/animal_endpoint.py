@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status, Depends
 from app.services.animal_service.animals import AnimalsService
-from app.schemas.animal import (
+from app.schemas.animal_schema import (
     AnimalResponseSchema,
 )
 from app.core.dependecies import get_animals_service
@@ -16,10 +16,11 @@ router = APIRouter(prefix="/animal", tags=["Скачивание картинк�
         500: {"description": "Внутренняя ошибка сервера."},
     }
 )
-def read_animal_by(
+async def read_animal_by(
         animal_type: str,
         animal_service: AnimalsService = Depends(get_animals_service)
 ) -> AnimalResponseSchema:
-    image = animal_service.get_image(animal_type)
-    animal_service.save_image(image)
-    return AnimalResponseSchema(animal_type=animal_type)
+    animal = await animal_service.create_animal_by(animal_type= animal_type)
+    image = animal_service.get_animal_image(animal_type)
+    animal_service.save_image(image, name= animal.processed_image)
+    return AnimalResponseSchema(animal_type= animal_type)
