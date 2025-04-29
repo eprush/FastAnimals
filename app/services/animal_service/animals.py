@@ -1,54 +1,39 @@
-"""
-A module that implements the search for functions for receiving photos of
- animals like get_{source}_{animal_type}.
-When trying to add a new function in the import, give it an alias as get_{animal_type}
-"""
-
-from collections.abc import Callable
 import requests
-from uuid import UUID
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.repositories.animals_repository import AnimalsRepository
-from app.schemas.animal_schema import AnimalDetailSchema
+from app.core.config import get_app_settings
+from app.services.animal_service.abstract_animal import AbstractAnimal, Link, Headers
+from random import randint
+from typing import Protocol, TypeVar
 
-import os
-from pathlib import Path
 
-from app.services.animal_service.dogs import get_dogapi_dog as get_dog
-from app.services.animal_service.foxes import get_randomfox_fox as get_fox
-from app.services.animal_service.cats import get_thecatapi_cat as get_cat
+class Cat(AbstractAnimal):
+    def get_image(self) -> tuple[Link, Headers]:
+        settings = get_app_settings()
+        api_key = str(settings.cat_api_key)
 
-# Need to be changed
-STATIC_DIR: str = os.path.join(Path(__file__).resolve().parent.parent.parent, "static")
-def get_new_file_path(filename: str):
-    return os.path.join(STATIC_DIR, filename + ".jpg")
+        headers = {"content_type": "application/json", "api_key": api_key}
+        url = f"https://api.thecatapi.com/v1/images/search"
+        response = requests.get(url, headers=headers).json()
+        cat_link = response[0].get_image("url", None) if response else None
+        return cat_link, headers
 
-class AnimalsService:
-    animals: dict[str, Callable[[], tuple[str, dict]]] = {
-        name[4:]: func for name, func in globals().items()
-        if name.startswith("get_") and callable(func)
-    }
+class Dog(AbstractAnimal):
+    def get_image(self) -> tuple[Link, Headers]:
+        headers = {"content_type": "application/json"}
+        url = "https://dog.ceo/api/breeds/image/random"
+        response = requests.get(url, headers=headers).json()
+        dog_link = response.get_image("message", None) if response else None
+        return dog_link, headers
 
-    def __init__(self, db_session: AsyncSession) -> None:
-        self.animals_repository = AnimalsRepository(db_session= db_session)
+class Fox(AbstractAnimal):
+    def get_image(self) -> tuple[Link, Headers]:
+        fox_count = 124
+        random_fox_number = randint(1, fox_count)
+        headers = {"content_type": "application/json"}
+        fox_link = f"https://randomfox.ca//images//{random_fox_number}.jpg"
+        return fox_link, headers
 
-    async def create_animal_by(self, animal_type: str) -> AnimalDetailSchema:
-        animal = await self.animals_repository.create_animal_by(animal_type= animal_type)
-        return AnimalDetailSchema.model_validate(animal)
+class AnimalProtocol(Protocol):
+    def get_image(self) -> tuple[Link, Headers]:
+        ...
 
-    def get_animal_image(self, animal_type: str) -> bytes | None:
-        func = self.animals.get(animal_type, None)
-        if func is None:
-            return #raise SomeError
-        link, headers = func()
-        response = requests.get(link, headers=headers)
-        if response.status_code == 200:
-            return response.content
-        return #raise SomeError
-
-    @staticmethod
-    def save_image(data: bytes, *, name: UUID) -> None:
-        filepath = get_new_file_path(str(name))
-        with open(filepath, "wb") as file:
-            file.write(data)
-        return
+Animal = TypeVar("Animal", bound=AnimalProtocol)
