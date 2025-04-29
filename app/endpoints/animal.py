@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status, Depends
-from app.services.animal_service.animals import AnimalsService
-from app.schemas.animal_schema import (
+from app.services.animal_service.animal import AnimalsService
+from app.schemas.animal import (
     AnimalResponseSchema,
 )
 from app.core.dependecies import get_animals_service

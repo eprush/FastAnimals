@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from app.endpoints import animal_endpoint
+from app.endpoints import animal
 
 routers = APIRouter()
 
-routers.include_router(animal_endpoint.router)
+routers.include_router(animal.router)
