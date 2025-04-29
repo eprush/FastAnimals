@@ -3,7 +3,8 @@ from collections.abc import AsyncGenerator
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.core.config import Settings, get_app_settings
-from app.services.animal_service.animal import AnimalsService
+from app.services.animal import AnimalsService
+from app.services.image import AnimalImage
 from typing import Annotated
 from fastapi import Depends
 
@@ -37,3 +38,6 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 def get_animals_service(db: Annotated[AsyncSession, Depends(get_db)]) -> AnimalsService:
     """Returns an instance of AnimalsService."""
     return AnimalsService(db_session=db)
+
+def get_image_service() -> AnimalImage:
+    return AnimalImage()

@@ -1,6 +1,6 @@
 import requests
 from app.core.config import get_app_settings
-from app.services.animal_service.abstract_animal import AbstractAnimal, Link, Headers
+from app.services.animals.abstract_animal import AbstractAnimal, Link, Headers
 from random import randint
 from typing import Protocol, TypeVar
 

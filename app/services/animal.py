@@ -12,7 +12,7 @@ from pathlib import Path
 
 from app.repositories.animals import AnimalsRepository
 from app.schemas.animal import AnimalDetailSchema
-from app.services.animal_service.animals import (
+from app.services.animals.real_animals import (
     Fox,
     Dog,
     Cat,
@@ -44,8 +44,8 @@ class AnimalsService:
         return #raise SomeError
 
     @staticmethod
-    def save_image(data: bytes, *, name: UUID) -> None:
+    def save_image(data: bytes, *, name: UUID) -> str:
         filepath = get_new_file_path(str(name))
         with open(filepath, "wb") as file:
             file.write(data)
-        return
+        return filepath
