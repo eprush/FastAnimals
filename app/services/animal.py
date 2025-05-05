@@ -7,8 +7,6 @@ When trying to add a new function in the import, give it an alias as get_{animal
 import requests
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
-import os
-from pathlib import Path
 
 from app.repositories.animals import AnimalsRepository
 from app.schemas.animal import AnimalDetailSchema
@@ -19,33 +17,30 @@ from app.services.animals.real_animals import (
     Animal
 )
 
-# Need to be changed
-STATIC_DIR: str = os.path.join(Path(__file__).resolve().parent.parent.parent, "static")
-def get_new_file_path(filename: str):
-    return os.path.join(STATIC_DIR, filename + ".jpg")
-
 class AnimalsService:
     def __init__(self, db_session: AsyncSession) -> None:
         self.animals_repository = AnimalsRepository(db_session= db_session)
-        self.animals: dict[str, Animal] = {"dog": Dog, "cat": Cat, "fox": Fox}
+        self.animals: dict[str, Animal] = {"dog": Dog(), "cat": Cat(), "fox": Fox()}
 
-    async def create_animal_by(self, animal_type: str) -> AnimalDetailSchema:
+    async def create_animal(self, animal_type: str) -> AnimalDetailSchema:
         animal = await self.animals_repository.create_animal_by(animal_type= animal_type)
         return AnimalDetailSchema.model_validate(animal)
 
-    def get_animal_image(self, animal_type: str) -> bytes | None:
+    async def get_animal_by_uuid(self, uuid_code: UUID) -> AnimalDetailSchema:
+        animal = await self.animals_repository.get_animal_by_uuid(uuid_code= uuid_code)
+        return AnimalDetailSchema(
+            id= animal.id,
+            animal_type= animal.animal_type,
+            processed_image= animal.processed_image,
+            created_at= animal.created_at,
+        )
+
+    def request_animal_image(self, animal_type: str) -> bytes | None:
         animal = self.animals.get(animal_type, None)
         if animal is None:
             return #raise SomeError
-        link, headers = animal.get_image()
+        link, headers = animal.request_image()
         response = requests.get(link, headers=dict(headers))
         if response.status_code == 200:
             return response.content
         return #raise SomeError
-
-    @staticmethod
-    def save_image(data: bytes, *, name: UUID) -> str:
-        filepath = get_new_file_path(str(name))
-        with open(filepath, "wb") as file:
-            file.write(data)
-        return filepath
