@@ -7,23 +7,23 @@ from app.core.config import (
 )
 
 
-def get_image_path(filename: str) -> str:
-    return os.path.join(get_static_dir(), filename + ".jpg")
-
 class AnimalImage:
     @staticmethod
-    def get_image(name: UUID) -> bytes:
-        image_path = get_image_path(str(name))
-        return Image.open(image_path).tobytes()
+    def get_image_name(name: UUID) -> str:
+        return str(name) + ".jpg"
+
+    @staticmethod
+    def get_image_path(name: UUID) -> str:
+        return os.path.join(get_static_dir(), AnimalImage.get_image_name(name))
 
     @staticmethod
     def save_image(data: bytes, *, name: UUID) -> str:
-        filepath = get_image_path(str(name))
+        image_path = AnimalImage.get_image_path(name)
         #image = Image.frombytes("L", (3, 2), data) # how to get image sizes tuple
         #image.save(filepath)
-        with open(filepath, "wb") as file:
+        with open(image_path, "wb") as file:
             file.write(data)
-        return filepath
+        return image_path
 
     @staticmethod
     def blur(path) -> None:

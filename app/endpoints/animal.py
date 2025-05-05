@@ -20,7 +20,7 @@ router = APIRouter(prefix="/animal", tags=["Скачивание картинк�
         500: {"description": "Внутренняя ошибка сервера."},
     }
 )
-async def read_animal_by(
+async def read_animal_by_type(
         animal_type: str,
         animal_service: AnimalsService = Depends(get_animals_service),
         image_service: AnimalImage = Depends(get_image_service)

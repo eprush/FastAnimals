@@ -1,7 +1,7 @@
 import uuid
-
-from sqlalchemy import insert
+from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.models.animal import Animal
 
 class AnimalsRepository:
@@ -18,3 +18,8 @@ class AnimalsRepository:
         await self.db_session.commit()
 
         return new_record
+
+    async def get_animal_by_uuid(self, uuid_code: uuid.UUID) -> Animal | None:
+        statement = select(Animal).where(Animal.processed_image == uuid_code) # type error
+        result = await self.db_session.execute(statement)
+        return result.scalars().one_or_none()
