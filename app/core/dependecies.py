@@ -1,12 +1,11 @@
 from collections.abc import AsyncGenerator
-
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from typing import Annotated
+from fastapi import Depends
 
 from app.core.config import Settings, get_app_settings
 from app.services.animal import AnimalsService
 from app.services.image import AnimalImage
-from typing import Annotated
-from fastapi import Depends
 
 app_settings: Settings = get_app_settings()
 

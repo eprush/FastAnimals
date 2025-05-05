@@ -11,5 +11,5 @@ class Headers(TypedDict):
 class AbstractAnimal(ABC):
 
     @abstractmethod
-    def get_image(self) -> tuple[Link, Headers]:
+    def request_image(self) -> tuple[Link, Headers]:
         """Returns the link to download the photo and needed headers"""
