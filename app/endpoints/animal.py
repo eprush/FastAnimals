@@ -25,8 +25,8 @@ async def read_animal_by(
         animal_service: AnimalsService = Depends(get_animals_service),
         image_service: AnimalImage = Depends(get_image_service)
 ) -> AnimalResponseSchema:
-    animal = await animal_service.create_animal_by(animal_type= animal_type)
-    image = animal_service.get_animal_image(animal_type)
-    image_path = animal_service.save_image(image, name= animal.processed_image)
+    image = animal_service.request_animal_image(animal_type)
+    animal = await animal_service.create_animal(animal_type= animal_type)
+    image_path = image_service.save_image(image, name= animal.processed_image)
     image_service.contour(image_path)
     return AnimalResponseSchema(animal_type= animal_type)
