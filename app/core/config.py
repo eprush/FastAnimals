@@ -13,7 +13,10 @@ class Settings(BaseSettings):
     pg_username: str = "postgres"
     pg_password: str = "example"
 
+    table_name : str = "table.xlsx"
+
     cat_api_key: str = "peace_35mbejkg4uuVzdso0012"
+
     model_config = SettingsConfigDict(env_file=os.getenv("ENV_FILE", ".env"))
 
 

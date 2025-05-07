@@ -1,8 +1,10 @@
 import uuid
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, Row
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.animal import Animal
+
+AnimalRow = Row[tuple[Animal]]
 
 class AnimalsRepository:
     def __init__(self, db_session: AsyncSession) -> None:
@@ -23,3 +25,8 @@ class AnimalsRepository:
         statement = select(Animal).where(Animal.processed_image == uuid_code) # type error
         result = await self.db_session.execute(statement)
         return result.scalars().one_or_none()
+
+    async def get_all_animals(self) -> tuple[AnimalRow, ...]:
+        statement = select(Animal)
+        result = await self.db_session.execute(statement)
+        return tuple(result.scalars().all())
