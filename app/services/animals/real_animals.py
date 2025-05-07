@@ -1,11 +1,10 @@
 import requests
 from app.core.config import get_app_settings
-from app.services.animals.abstract_animal import AbstractAnimal, Link, Headers
+from app.services.animals.abstract_animal import AbstractAnimalReceiver, Link, Headers
 from random import randint
-from typing import Protocol, TypeVar
 
 
-class Cat(AbstractAnimal):
+class CatReceiver(AbstractAnimalReceiver):
     def request_image(self) -> tuple[Link, Headers]:
         settings = get_app_settings()
         api_key = str(settings.cat_api_key)
@@ -16,7 +15,7 @@ class Cat(AbstractAnimal):
         cat_link = response[0].get("url", None) if response else None
         return cat_link, headers
 
-class Dog(AbstractAnimal):
+class DogReceiver(AbstractAnimalReceiver):
     def request_image(self) -> tuple[Link, Headers]:
         headers = {"content_type": "application/json"}
         url = "https://dog.ceo/api/breeds/image/random"
@@ -24,7 +23,7 @@ class Dog(AbstractAnimal):
         dog_link = response.get("message", None) if response else None
         return dog_link, headers
 
-class Fox(AbstractAnimal):
+class FoxReceiver(AbstractAnimalReceiver):
     def request_image(self) -> tuple[Link, Headers]:
         fox_count = 124
         random_fox_number = randint(1, fox_count)
@@ -32,8 +31,20 @@ class Fox(AbstractAnimal):
         fox_link = f"https://randomfox.ca//images//{random_fox_number}.jpg"
         return fox_link, headers
 
-class AnimalProtocol(Protocol):
-    def request_image(self) -> tuple[Link, Headers]:
-        ...
+class AnimalReceiver:
+    def __init__(self):
+        self.animal_receivers: dict[str, AbstractAnimalReceiver] = {
+            "dog": DogReceiver(),
+            "cat": CatReceiver(),
+            "fox": FoxReceiver()
+        }
 
-Animal = TypeVar("Animal", bound=AnimalProtocol)
+    def request_image(self, animal_type: str) -> bytes | None:
+        animal = self.animal_receivers.get(animal_type, None)
+        if animal is None:
+            return  # raise SomeError
+        link, headers = animal.request_image()
+        response = requests.get(link, headers=dict(headers))
+        if response.status_code == 200:
+            return response.content
+        return  # raise SomeError

@@ -8,7 +8,7 @@ class Headers(TypedDict):
     api_key: NotRequired[str]
     content_type: str
 
-class AbstractAnimal(ABC):
+class AbstractAnimalReceiver(ABC):
 
     @abstractmethod
     def request_image(self) -> tuple[Link, Headers]:

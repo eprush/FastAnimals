@@ -10,17 +10,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.repositories.animals import AnimalsRepository
 from app.schemas.animal import AnimalDetailSchema
-from app.services.animals.real_animals import (
-    Fox,
-    Dog,
-    Cat,
-    Animal
+from app.core.config import (
+    get_static_dir,
+    get_app_settings
 )
+from app.services.animals.real_animals import AnimalReceiver
 
 class AnimalsService:
     def __init__(self, db_session: AsyncSession) -> None:
         self.animals_repository = AnimalsRepository(db_session= db_session)
-        self.animals: dict[str, Animal] = {"dog": Dog(), "cat": Cat(), "fox": Fox()}
+        self.animal_receiver: AnimalReceiver = AnimalReceiver()
 
     async def create_animal(self, animal_type: str) -> AnimalDetailSchema:
         animal = await self.animals_repository.create_animal_by(animal_type= animal_type)
@@ -36,11 +35,4 @@ class AnimalsService:
         )
 
     def request_animal_image(self, animal_type: str) -> bytes | None:
-        animal = self.animals.get(animal_type, None)
-        if animal is None:
-            return #raise SomeError
-        link, headers = animal.request_image()
-        response = requests.get(link, headers=dict(headers))
-        if response.status_code == 200:
-            return response.content
-        return #raise SomeError
+        return self.animal_receiver.request_image(animal_type)
