@@ -29,4 +29,7 @@ async def read_animal_by_type(
     animal = await animal_service.create_animal(animal_type= animal_type)
     image_path = image_service.save_image(image, name= animal.processed_image)
     image_service.contour(image_path)
-    return AnimalResponseSchema(animal_type= animal_type)
+    return AnimalResponseSchema(
+        animal_type= animal_type,
+        processed_image= animal.processed_image,
+    )
