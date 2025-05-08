@@ -9,10 +9,10 @@ from app.core.dependecies import (
     get_animals_service,
 )
 
-router = APIRouter(prefix="/history/static", tags=["Скачивание картинки указанного животного"])
+router = APIRouter(prefix="/history", tags=["Скачивание картинки указанного животного"])
 
 @router.get(
-    "/{uuid_code}",
+    "/static/{uuid_code}",
     status_code=status.HTTP_200_OK,
     responses={
         200: { "description": "Приложение доступно и работает.",
@@ -22,7 +22,7 @@ router = APIRouter(prefix="/history/static", tags=["Скачивание кар�
     },
     response_class=FileResponse
 )
-async def get_animal_by_uuid(
+async def read_animal_by_uuid(
         uuid_code: UUID,
         animal_service: AnimalsService = Depends(get_animals_service),
         image_service: AnimalImage = Depends(get_image_service)
@@ -36,4 +36,21 @@ async def get_animal_by_uuid(
         path=image_path,
         media_type="image/jpg",
         filename=image_name
+    )
+
+@router.get(
+    "",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {"description": "Приложение доступно и работает.",},
+        500: {"description": "Внутренняя ошибка сервера."},
+    },
+    response_class=FileResponse
+)
+async def read_all_animals(
+        animal_service: AnimalsService = Depends(get_animals_service)
+) -> FileResponse:
+    animals_path = await animal_service.get_all_animals()
+    return FileResponse(
+        path=animals_path,
     )
