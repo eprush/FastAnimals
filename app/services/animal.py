@@ -4,9 +4,10 @@ A module that implements the search for functions for receiving photos of
 When trying to add a new function in the import, give it an alias as get_{animal_type}
 """
 
-import requests
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
+import pandas as pd
+import os
 
 from app.repositories.animals import AnimalsRepository
 from app.schemas.animal import AnimalDetailSchema
@@ -33,6 +34,28 @@ class AnimalsService:
             processed_image= animal.processed_image,
             created_at= animal.created_at,
         )
+
+    async def get_all_animals(self):
+        table_path = os.path.join(get_static_dir(), get_app_settings().table_name)
+        if os.path.exists(table_path):
+            os.remove(table_path)
+
+        all_animals = await self.animals_repository.get_all_animals()
+        data = pd.DataFrame({
+            "id": [],
+            "animal type": [],
+            "processed image": [],
+            "created at": []
+        })
+        for i, animal in enumerate(all_animals):
+            data.loc[i] = [
+                animal.id,
+                animal.animal_type,
+                animal.processed_image,
+                str(animal.created_at)
+            ]
+        data.to_excel(table_path, index= False)
+        return table_path
 
     def request_animal_image(self, animal_type: str) -> bytes | None:
         return self.animal_receiver.request_image(animal_type)
