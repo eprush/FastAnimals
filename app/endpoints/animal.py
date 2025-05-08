@@ -2,7 +2,8 @@ from fastapi import APIRouter, status, Depends
 from app.services.animal import AnimalsService
 from app.services.image import AnimalImage
 from app.schemas.animal import (
-    AnimalResponseSchema,
+    AnimalSchema,
+    AnimalTypeSchema,
 )
 from app.core.dependecies import (
     get_animals_service,
@@ -18,18 +19,25 @@ router = APIRouter(prefix="/animal", tags=["Скачивание картинк�
     responses={
         200: { "description": "Приложение доступно и работает."},
         500: {"description": "Внутренняя ошибка сервера."},
-    }
+    },
+    response_model=AnimalSchema,
+    description="""
+        Эндпоинт, загружающий случайную фотографию указанного типа животного.
+        На фото накладывается фильтр.
+        Данные о фото сохраняются в бд.
+    """,
 )
 async def read_animal_by_type(
-        animal_type: str,
+        type_to_read: AnimalTypeSchema,
         animal_service: AnimalsService = Depends(get_animals_service),
         image_service: AnimalImage = Depends(get_image_service)
-) -> AnimalResponseSchema:
-    image = animal_service.request_animal_image(animal_type)
-    animal = await animal_service.create_animal(animal_type= animal_type)
+) -> AnimalSchema:
+    """ An endpoint that uploads a random photo of the specified type of animal. """
+    image = animal_service.request_animal_image(type_to_read.animal_type)
+    animal = await animal_service.create_animal(animal_type= type_to_read.animal_type)
     image_path = image_service.save_image(image, name= animal.processed_image)
     image_service.contour(image_path)
-    return AnimalResponseSchema(
-        animal_type= animal_type,
+    return AnimalSchema(
+        animal_type= type_to_read,
         processed_image= animal.processed_image,
     )

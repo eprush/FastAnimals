@@ -5,6 +5,7 @@ from random import randint
 
 
 class CatReceiver(AbstractAnimalReceiver):
+    """ A class for thecatapi.com """
     def request_image(self) -> tuple[Link, Headers]:
         settings = get_app_settings()
         api_key = str(settings.cat_api_key)
@@ -16,6 +17,7 @@ class CatReceiver(AbstractAnimalReceiver):
         return cat_link, headers
 
 class DogReceiver(AbstractAnimalReceiver):
+    """ A class for dog.ceo """
     def request_image(self) -> tuple[Link, Headers]:
         headers = {"content_type": "application/json"}
         url = "https://dog.ceo/api/breeds/image/random"
@@ -24,6 +26,7 @@ class DogReceiver(AbstractAnimalReceiver):
         return dog_link, headers
 
 class FoxReceiver(AbstractAnimalReceiver):
+    """ A class for randomfox.ca """
     def request_image(self) -> tuple[Link, Headers]:
         fox_count = 124
         random_fox_number = randint(1, fox_count)
@@ -32,6 +35,7 @@ class FoxReceiver(AbstractAnimalReceiver):
         return fox_link, headers
 
 class AnimalReceiver:
+    """ A class for all types of animals. """
     def __init__(self):
         self.animal_receivers: dict[str, AbstractAnimalReceiver] = {
             "dog": DogReceiver(),
@@ -40,6 +44,7 @@ class AnimalReceiver:
         }
 
     def request_image(self, animal_type: str) -> bytes | None:
+        """ A method for sending a request for a photo of a certain type of animal. """
         animal = self.animal_receivers.get(animal_type, None)
         if animal is None:
             return  # raise SomeError

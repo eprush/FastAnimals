@@ -15,18 +15,23 @@ router = APIRouter(prefix="/history", tags=["Скачивание картинк
     "/static/{uuid_code}",
     status_code=status.HTTP_200_OK,
     responses={
-        200: { "description": "Приложение доступно и работает.",
-               "content": {"image/jpg": {}},
+        200: {
+            "description": "Приложение доступно и работает.",
+            "content": {"image/jpg": {}},
         },
         500: {"description": "Внутренняя ошибка сервера."},
     },
-    response_class=FileResponse
+    response_class=FileResponse,
+    description="""
+    Эндпоинт, получающий фотографию животного по uuid.
+    """
 )
 async def read_animal_by_uuid(
         uuid_code: UUID,
         animal_service: AnimalsService = Depends(get_animals_service),
         image_service: AnimalImage = Depends(get_image_service)
 ) -> FileResponse:
+    """ Endpoint that receives a photo of an animal by uuid. """
     animal = await animal_service.get_animal_by_uuid(uuid_code)
     #if animal is None:
         #return #raise SomeError
@@ -42,15 +47,23 @@ async def read_animal_by_uuid(
     "",
     status_code=status.HTTP_200_OK,
     responses={
-        200: {"description": "Приложение доступно и работает.",},
+        200: {
+            "description": "Приложение доступно и работает.",
+            "content": {"application/msexcel": {}},
+        },
         500: {"description": "Внутренняя ошибка сервера."},
     },
-    response_class=FileResponse
+    response_class=FileResponse,
+    description="""
+    Эндпоинт, получающий историю всех запросов.
+    """
 )
 async def read_all_animals(
         animal_service: AnimalsService = Depends(get_animals_service)
 ) -> FileResponse:
+    """ The endpoint that gets the history of all requests. """
     animals_path = await animal_service.get_all_animals()
     return FileResponse(
         path=animals_path,
+        media_type="application/msexcel",
     )
