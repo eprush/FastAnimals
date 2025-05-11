@@ -5,20 +5,27 @@ from app.schemas.animal import (
     AnimalSchema,
     AnimalTypeSchema,
 )
+from app.schemas.problem import ProblemDetail
 from app.core.dependecies import (
     get_animals_service,
     get_image_service,
 )
 
-router = APIRouter(prefix="/animal", tags=["Скачивание картинки указанного животного"])
+router = APIRouter(prefix="/animal", tags=["Скачивание картинки."])
 
 
 @router.get(
     "/{animal_type}",
     status_code=status.HTTP_200_OK,
     responses={
-        200: { "description": "Приложение доступно и работает."},
-        500: {"description": "Внутренняя ошибка сервера."},
+        200: {
+            "model": AnimalSchema,
+            "description": "Приложение доступно и работает."
+        },
+        500: {
+            "model": ProblemDetail,
+            "description": "Внутренняя ошибка сервера.",
+        },
     },
     response_model=AnimalSchema,
     description="""

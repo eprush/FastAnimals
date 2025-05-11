@@ -8,6 +8,7 @@ from app.core.dependecies import (
     get_image_service,
     get_animals_service,
 )
+from app.schemas.problem import ProblemDetail
 
 router = APIRouter(prefix="/history", tags=["Скачивание картинки указанного животного"])
 
@@ -16,10 +17,13 @@ router = APIRouter(prefix="/history", tags=["Скачивание картинк
     status_code=status.HTTP_200_OK,
     responses={
         200: {
+            "model": FileResponse,
             "description": "Приложение доступно и работает.",
             "content": {"image/jpg": {}},
         },
-        500: {"description": "Внутренняя ошибка сервера."},
+        500: {
+            "model": ProblemDetail,
+            "description": "Внутренняя ошибка сервера."},
     },
     response_class=FileResponse,
     description="""
@@ -48,10 +52,14 @@ async def read_animal_by_uuid(
     status_code=status.HTTP_200_OK,
     responses={
         200: {
+            "model": FileResponse,
             "description": "Приложение доступно и работает.",
             "content": {"application/msexcel": {}},
         },
-        500: {"description": "Внутренняя ошибка сервера."},
+        500: {
+            "model": ProblemDetail,
+            "description": "Внутренняя ошибка сервера.",
+        },
     },
     response_class=FileResponse,
     description="""
