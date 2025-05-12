@@ -1,7 +1,9 @@
 import requests
+from random import randint
+
 from app.core.config import get_app_settings
 from app.services.animals.abstract_animal import AbstractAnimalReceiver, Link, Headers
-from random import randint
+
 
 
 class CatReceiver(AbstractAnimalReceiver):
@@ -47,9 +49,9 @@ class AnimalReceiver:
         """ A method for sending a request for a photo of a certain type of animal. """
         animal = self.animal_receivers.get(animal_type, None)
         if animal is None:
-            return  # raise SomeError
+            return
+
         link, headers = animal.request_image()
         response = requests.get(link, headers=dict(headers))
         if response.status_code == 200:
             return response.content
-        return  # raise SomeError
