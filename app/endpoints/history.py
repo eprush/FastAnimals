@@ -9,6 +9,7 @@ from app.core.dependecies import (
     get_animals_service,
 )
 from app.schemas.problem import ProblemDetail
+from app.schemas.animal import AllAnimalsSchema
 
 router = APIRouter(prefix="/history", tags=["Скачивание картинки указанного животного"])
 
@@ -17,7 +18,7 @@ router = APIRouter(prefix="/history", tags=["Скачивание картинк
     status_code=status.HTTP_200_OK,
     responses={
         200: {
-            "model": FileResponse,
+            "model": AllAnimalsSchema,
             "description": "Приложение доступно и работает.",
             "content": {"image/jpg": {}},
         },
@@ -52,26 +53,21 @@ async def read_animal_by_uuid(
     status_code=status.HTTP_200_OK,
     responses={
         200: {
-            "model": FileResponse,
             "description": "Приложение доступно и работает.",
-            "content": {"application/msexcel": {}},
+            "content": {"application/json": {}},
         },
         500: {
             "model": ProblemDetail,
             "description": "Внутренняя ошибка сервера.",
         },
     },
-    response_class=FileResponse,
     description="""
     Эндпоинт, получающий историю всех запросов.
     """
 )
 async def read_all_animals(
         animal_service: AnimalsService = Depends(get_animals_service)
-) -> FileResponse:
+) -> AllAnimalsSchema:
     """ The endpoint that gets the history of all requests. """
-    animals_path = await animal_service.get_all_animals()
-    return FileResponse(
-        path=animals_path,
-        media_type="application/msexcel",
-    )
+    animals = await animal_service.get_all_animals()
+    return animals
