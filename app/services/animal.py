@@ -15,7 +15,9 @@ from app.core.config import (
     get_static_dir,
     get_app_settings
 )
-from app.services.animals.real_animals import AnimalReceiver
+
+
+from app.integrations.common import AnimalReceiver
 
 class AnimalsService:
     def __init__(self, db_session: AsyncSession) -> None:
