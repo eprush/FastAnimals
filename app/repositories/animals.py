@@ -1,10 +1,9 @@
 import uuid
-from sqlalchemy import insert, select, Row
+from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.animal import Animal
 
-AnimalRow = Row[tuple[Animal]]
 
 class AnimalsRepository:
     def __init__(self, db_session: AsyncSession) -> None:
@@ -28,7 +27,7 @@ class AnimalsRepository:
         result = await self.db_session.execute(statement)
         return result.scalars().one_or_none()
 
-    async def get_all_animals(self) -> tuple[AnimalRow, ...]:
+    async def get_all_animals(self) -> tuple[Animal, ...]:
         """ Method for creating a query history file. """
         statement = select(Animal)
         result = await self.db_session.execute(statement)
