@@ -15,28 +15,20 @@ from app.schemas.animal import (
     ImageSchema,
 )
 
-
-from app.integrations.common import AnimalReceiver
-
 class AnimalsService:
     def __init__(self, db_session: AsyncSession) -> None:
         self.animals_repository = AnimalsRepository(db_session= db_session)
         self.animal_receiver: AnimalReceiver = AnimalReceiver()
 
-    async def create_animal(self, animal_type: str) -> AnimalDetailSchema:
+    async def create_animal(self, *, animal_type: str) -> AnimalDetailSchema:
         """ A method for creating a сertain type of animal. """
-        animal = await self.animals_repository.create_animal_by(animal_type= animal_type)
+        animal = await self.animals_repository.create_animal(animal_type)
         return AnimalDetailSchema.model_validate(animal)
 
-    async def get_animal_by_uuid(self, uuid_code: UUID) -> AnimalDetailSchema:
+    async def get_animal_by_uuid(self, uuid_code: UUID) -> AnimalDetailSchema | None:
         """ Method for getting an animal by uuid. """
-        animal = await self.animals_repository.get_animal_by_uuid(uuid_code= uuid_code)
-        return AnimalDetailSchema(
-            id= animal.id,
-            animal_type= animal.animal_type,
-            processed_image= animal.processed_image,
-            created_at= animal.created_at,
-        )
+        animal = await self.animals_repository.get_animal_by_uuid(uuid_code)
+        return AnimalDetailSchema.model_validate(animal) if animal is not None else None
 
     async def get_all_animals(self) -> AllAnimalsSchema:
         """ Method for creating a query history file. """
