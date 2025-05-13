@@ -1,10 +1,9 @@
 import uuid
-
-from app.core.config import Settings, get_app_settings
 from sqlalchemy import Integer, Column, DateTime, String, func
 from sqlalchemy.dialects.postgresql import UUID
 
-from app.models.base import Base
+from core.config import Settings, get_app_settings
+from models.base import Base
 
 app_settings: Settings = get_app_settings()
 

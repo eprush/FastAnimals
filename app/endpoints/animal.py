@@ -1,13 +1,13 @@
 from fastapi import APIRouter, status, Depends, HTTPException
 
-from app.services.animal import AnimalsService
-from app.services.image import AnimalImage
-from app.schemas.animal import (
+from services.animal import AnimalsService
+from services.image import AnimalImage
+from schemas.animal import (
     AnimalSchema,
     AnimalTypeSchema,
 )
-from app.schemas.problem import ProblemDetail
-from app.core.dependecies import (
+from schemas.problem import ProblemDetail
+from core.dependecies import (
     get_animals_service,
     get_image_service,
 )

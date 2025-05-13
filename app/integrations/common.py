@@ -1,7 +1,7 @@
 import requests
 
-from app.integrations.abstract_animal import AbstractAnimalReceiver
-from app.integrations.real_animals import (
+from integrations.abstract_animal import AbstractAnimalReceiver
+from integrations.real_animals import (
     DogReceiver,
     CatReceiver,
     FoxReceiver,

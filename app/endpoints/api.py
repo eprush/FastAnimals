@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.endpoints import animal, history
+from endpoints import animal, history
 
 routers = APIRouter()
 

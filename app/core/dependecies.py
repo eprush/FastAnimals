@@ -3,9 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from typing import Annotated
 from fastapi import Depends
 
-from app.core.config import Settings, get_app_settings
-from app.services.animal import AnimalsService
-from app.services.image import AnimalImage
+from core.config import Settings, get_app_settings
+from services.animal import AnimalsService
+from services.image import AnimalImage
 
 app_settings: Settings = get_app_settings()
 

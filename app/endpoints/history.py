@@ -2,14 +2,14 @@ from fastapi import APIRouter, status, Depends, HTTPException
 from fastapi.responses import FileResponse
 from uuid import UUID
 
-from app.services.animal import AnimalsService
-from app.services.image import AnimalImage
-from app.core.dependecies import (
+from services.animal import AnimalsService
+from services.image import AnimalImage
+from core.dependecies import (
     get_image_service,
     get_animals_service,
 )
-from app.schemas.problem import ProblemDetail
-from app.schemas.animal import AllAnimalsSchema
+from schemas.problem import ProblemDetail
+from schemas.animal import AllAnimalsSchema
 
 router = APIRouter(prefix="/history", tags=["Показ истории запросов."])
 

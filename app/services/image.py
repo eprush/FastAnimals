@@ -2,7 +2,7 @@ from uuid import UUID
 from PIL import Image, ImageFilter
 import os
 
-from app.core.config import (
+from core.config import (
     get_static_dir,
 )
 

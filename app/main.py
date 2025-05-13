@@ -2,9 +2,9 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 
-from app.core.config import Settings, get_app_settings
-from app.endpoints.api import routers
-from app.core.exception_handlers import (
+from core.config import Settings, get_app_settings
+from endpoints.api import routers
+from core.exception_handlers import (
     http_exception_handler,
     all_exception_handler,
 )
