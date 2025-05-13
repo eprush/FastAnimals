@@ -1,4 +1,5 @@
 from fastapi import APIRouter, status, Depends, HTTPException
+
 from app.services.animal import AnimalsService
 from app.services.image import AnimalImage
 from app.schemas.animal import (
@@ -49,9 +50,9 @@ async def read_animal_by_type(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="A non-existent page")
 
     animal = await animal_service.create_animal(animal_type= type_to_read.animal_type)
-    image_path = image_service.save_image(image, name= animal.processed_image)
+    image_path = image_service.save_image(animal_image.image, name= animal.processed_image)
     image_service.contour(image_path)
     return AnimalSchema(
-        animal_type= type_to_read,
+        animal_type= animal.animal_type,
         processed_image= animal.processed_image,
     )

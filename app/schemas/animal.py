@@ -49,9 +49,14 @@ class AnimalDetailSchema(BaseModel):
 class AllAnimalsSchema(BaseModel):
     animals: tuple[AnimalDetailSchema, ...] = Field(
         ...,
-        description="",
+        description="List of all requests.",
     )
 
+class ImageSchema(BaseModel):
+    image = bytes = Field(
+        ...,
+        description="Image in byte representation."
+    )
 
 class AnimalTypeSchema(BaseModel):
     """ The scheme for obtaining the type of animal. """

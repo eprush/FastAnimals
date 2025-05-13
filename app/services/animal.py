@@ -8,9 +8,11 @@ from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.repositories.animals import AnimalsRepository
+from app.integrations.common import AnimalReceiver
 from app.schemas.animal import (
     AnimalDetailSchema,
     AllAnimalsSchema,
+    ImageSchema,
 )
 
 
@@ -41,6 +43,7 @@ class AnimalsService:
         all_animals = await self.animals_repository.get_all_animals()
         return AllAnimalsSchema(animals= all_animals)
 
-    def request_animal_image(self, animal_type: str) -> bytes | None:
+    def request_animal_image(self, *, animal_type: str) -> ImageSchema | None:
         """ A method for sending a request for a photo of a certain type of animal. """
-        return self.animal_receiver.request_image(animal_type)
+        image_bytes = self.animal_receiver.request_image(animal_type)
+        return ImageSchema(image= image_bytes) if image_bytes is not None else None
