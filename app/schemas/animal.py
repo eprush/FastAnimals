@@ -53,7 +53,7 @@ class AllAnimalsSchema(BaseModel):
     )
 
 class ImageSchema(BaseModel):
-    image = bytes = Field(
+    image: bytes = Field(
         ...,
         description="Image in byte representation."
     )
