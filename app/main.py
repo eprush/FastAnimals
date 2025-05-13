@@ -1,10 +1,13 @@
 from pathlib import Path
+from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 
 from app.core.config import Settings, get_app_settings
-
 from app.endpoints.api import routers
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
+from app.core.exception_handlers import (
+    http_exception_handler,
+    all_exception_handler,
+)
 
 
 def get_application() -> FastAPI:
@@ -21,6 +24,9 @@ def get_application() -> FastAPI:
     static_dir = Path("static")
     if static_dir.is_dir():
         application.mount("/app/static", StaticFiles(directory="static"), name="static")
+
+    application.add_exception_handler(HTTPException, http_exception_handler) # type: ignore
+    application.add_exception_handler(Exception, all_exception_handler)
 
     return application
 
