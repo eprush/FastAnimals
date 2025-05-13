@@ -9,7 +9,7 @@ class AnimalsRepository:
     def __init__(self, db_session: AsyncSession) -> None:
         self.db_session = db_session
 
-    async def create_animal_by(self, animal_type: str) -> Animal | None:
+    async def create_animal(self, animal_type: str) -> Animal:
         """ A method for creating a сertain type of animal in the database. """
         statement = insert(Animal).values(
             processed_image=uuid.uuid4(),
