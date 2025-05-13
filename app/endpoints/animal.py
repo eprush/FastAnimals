@@ -40,16 +40,16 @@ router = APIRouter(prefix="/animal", tags=["Скачивание фотогра�
     """,
 )
 async def read_animal_by_type(
-        type_to_read: AnimalTypeSchema,
+        animal_type: AnimalTypeSchema,
         animal_service: AnimalsService = Depends(get_animals_service),
         image_service: AnimalImage = Depends(get_image_service)
 ) -> AnimalSchema:
     """ An endpoint that uploads a random photo of the specified type of animal. """
-    animal_image = animal_service.request_animal_image(animal_type= type_to_read.animal_type)
+    animal_image = animal_service.request_animal_image(animal_type= animal_type)
     if animal_image is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Указан неподдерживаемый тип животного.")
 
-    animal = await animal_service.create_animal(animal_type= type_to_read.animal_type)
+    animal = await animal_service.create_animal(animal_type= animal_type)
     image_path = image_service.save_image(animal_image.image, name= animal.processed_image)
     image_service.contour(image_path)
     return AnimalSchema(

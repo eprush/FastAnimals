@@ -1,3 +1,4 @@
+from enum import Enum
 from pydantic import BaseModel, Field, ConfigDict
 from uuid import UUID
 from datetime import datetime
@@ -58,13 +59,7 @@ class ImageSchema(BaseModel):
         description="Image in byte representation."
     )
 
-class AnimalTypeSchema(BaseModel):
-    """ The scheme for obtaining the type of animal. """
-
-    animal_type: str = Field(
-        ...,
-        description="The type of animal whose photo will be downloaded.",
-        examples=["dog", "cat", "fox"],
-    )
-
-    model_config = ConfigDict(from_attributes=True)
+class AnimalTypeSchema(str, Enum):
+    dog = "dog"
+    cat = "cat"
+    fox = "fox"
