@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends, HTTPException
 from fastapi.responses import FileResponse
 from uuid import UUID
 
@@ -11,7 +11,7 @@ from app.core.dependecies import (
 from app.schemas.problem import ProblemDetail
 from app.schemas.animal import AllAnimalsSchema
 
-router = APIRouter(prefix="/history", tags=["Скачивание картинки указанного животного"])
+router = APIRouter(prefix="/history", tags=["Показ истории запросов."])
 
 @router.get(
     "/static/{uuid_code}",
@@ -21,6 +21,10 @@ router = APIRouter(prefix="/history", tags=["Скачивание картинк
             "model": AllAnimalsSchema,
             "description": "Приложение доступно и работает.",
             "content": {"image/jpg": {}},
+        },
+        404: {
+            "model": ProblemDetail,
+            "description": "Неверный uuid-код.",
         },
         500: {
             "model": ProblemDetail,
@@ -38,8 +42,9 @@ async def read_animal_by_uuid(
 ) -> FileResponse:
     """ Endpoint that receives a photo of an animal by uuid. """
     animal = await animal_service.get_animal_by_uuid(uuid_code)
-    #if animal is None:
-        #return #raise SomeError
+    if animal is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Введен несуществующий uuid-код.")
+
     image_path = image_service.get_image_path(animal.processed_image)
     image_name = image_service.get_image_name(animal.processed_image)
     return FileResponse(
