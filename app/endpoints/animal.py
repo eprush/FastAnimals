@@ -25,7 +25,7 @@ router = APIRouter(prefix="/animal", tags=["Скачивание картинк�
         },
         404: {
             "model": ProblemDetail,
-            "description": "Введен неподдерживаемый тип животного.",
+            "description": "Недоступный тип животного.",
         },
         500: {
             "model": ProblemDetail,
@@ -45,9 +45,9 @@ async def read_animal_by_type(
         image_service: AnimalImage = Depends(get_image_service)
 ) -> AnimalSchema:
     """ An endpoint that uploads a random photo of the specified type of animal. """
-    animal_image = animal_service.request_animal_image(animal_type= type_to_read.animal_type)
-    if animal_image is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Недоступный тип животного.")
+    image = animal_service.request_animal_image(type_to_read.animal_type)
+    if image is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="A non-existent page")
 
     animal = await animal_service.create_animal(animal_type= type_to_read.animal_type)
     image_path = image_service.save_image(animal_image.image, name= animal.processed_image)
