@@ -62,14 +62,4 @@ class AnimalTypeSchema(BaseModel):
         examples=["dog", "cat", "fox"],
     )
 
-    @field_validator("animal_type", mode="before")
-    @classmethod
-    def validate_animal_type(cls, value: str) -> str | None:
-        if value is None:
-            return value
-        available_animal_types = ("dog", "cat", "fox")
-        if value not in available_animal_types:
-            raise ValueError("Invalid animal type")
-        return value
-
     model_config = ConfigDict(from_attributes=True)
