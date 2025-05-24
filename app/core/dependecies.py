@@ -7,6 +7,7 @@ from collections.abc import AsyncGenerator
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from typing import Annotated
 from fastapi import Depends
+from asyncio import sleep
 
 from core.config import Settings, get_app_settings
 from services.animal import AnimalsService
@@ -14,7 +15,7 @@ from services.image import AnimalImage
 
 app_settings: Settings = get_app_settings()
 
-# Need to be changed
+
 pg_connection_string = (
     f"postgresql+asyncpg://{app_settings.pg_username}:{app_settings.pg_password}@"
     f"{app_settings.pg_host}:{app_settings.pg_port}/{app_settings.pg_database}"
@@ -23,6 +24,7 @@ pg_connection_string = (
 async_engine = create_async_engine(
     pg_connection_string,
     pool_pre_ping=True,
+    pool_size=app_settings.pool_size,
 )
 
 async_session = async_sessionmaker(
@@ -39,9 +41,11 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         await db.close()
 
 
-def get_animals_service(db: Annotated[AsyncSession, Depends(get_db)]) -> AnimalsService:
+async def get_animals_service(db: Annotated[AsyncSession, Depends(get_db)]) -> AnimalsService:
     """Returns an instance of AnimalsService."""
+    await sleep(1)
     return AnimalsService(db_session=db)
 
-def get_image_service() -> AnimalImage:
+async def get_image_service() -> AnimalImage:
+    await sleep(1)
     return AnimalImage()
