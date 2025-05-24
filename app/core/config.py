@@ -11,11 +11,14 @@ from pathlib import Path
 class Settings(BaseSettings):
     """Configuration settings for the application."""
 
+    environment: str = "production"
+
     pg_host: str = "localhost"
     pg_port: str = "5432"
     pg_database: str = "fast_animals"
     pg_username: str = "postgres"
     pg_password: str = "example"
+    pool_size: int = 20
 
     table_name : str = "table.xlsx"
 

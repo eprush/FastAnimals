@@ -5,8 +5,10 @@ The script that runs the application
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
+import logging
 
 from core.config import Settings, get_app_settings
+from core.logging_config import setup_json_logging
 from endpoints.api import routers
 from core.exception_handlers import (
     http_exception_handler,
@@ -17,6 +19,11 @@ from core.exception_handlers import (
 def get_application() -> FastAPI:
     """Returns the FastAPI application instance."""
     settings: Settings = get_app_settings()
+
+    if settings.environment != "development":
+        setup_json_logging()
+        logger = logging.getLogger("health_tracker")
+        logger.warning("Running in production mode")
 
     application = FastAPI(
         **settings.model_dump(),
