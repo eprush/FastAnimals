@@ -1,3 +1,7 @@
+"""
+A module describing a wrapper service around external animal access services
+"""
+
 import requests
 
 from integrations.abstract_animal import AbstractAnimalReceiver

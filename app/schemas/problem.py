@@ -1,3 +1,7 @@
+"""
+A module describing problem schema
+"""
+
 from collections.abc import Sequence
 from typing import Any
 

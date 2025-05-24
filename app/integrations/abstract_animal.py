@@ -1,3 +1,7 @@
+"""
+A module describing the interface of an external animal service
+"""
+
 from typing import NotRequired, TypedDict
 from abc import ABC, abstractmethod
 

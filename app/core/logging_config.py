@@ -1,3 +1,7 @@
+"""
+The module describing logging
+"""
+
 import logging
 from pythonjsonlogger import json
 

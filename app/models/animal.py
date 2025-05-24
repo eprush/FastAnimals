@@ -1,3 +1,7 @@
+"""
+A module describing animal model with ORM
+"""
+
 import uuid
 from sqlalchemy import Integer, Column, DateTime, String, func
 from sqlalchemy.dialects.postgresql import UUID

@@ -1,3 +1,7 @@
+"""
+A module describing handlers for different types of errors
+"""
+
 import logging
 from fastapi import Request, status
 from fastapi.exceptions import HTTPException

@@ -1,3 +1,7 @@
+"""
+The script that runs the application
+"""
+
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles

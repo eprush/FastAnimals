@@ -1,3 +1,7 @@
+"""
+A module defining repository service for animal accessing at database
+"""
+
 import uuid
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession

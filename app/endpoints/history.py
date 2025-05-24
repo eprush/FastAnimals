@@ -1,3 +1,8 @@
+"""
+A module that implements endpoints of the type /history and /history/static/{uuid_code}
+"""
+
+
 from fastapi import APIRouter, status, Depends, HTTPException
 from fastapi.responses import FileResponse
 from uuid import UUID

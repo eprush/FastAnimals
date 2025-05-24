@@ -1,3 +1,8 @@
+"""
+A module that implements endpoints of the type /{animal_type}
+"""
+
+
 from fastapi import APIRouter, status, Depends, HTTPException
 
 from services.animal import AnimalsService

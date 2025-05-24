@@ -1,3 +1,7 @@
+"""
+A module defining image service
+"""
+
 from uuid import UUID
 from PIL import Image, ImageFilter
 import os

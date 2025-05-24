@@ -1,3 +1,7 @@
+"""
+A module describing the implementations of an external animal service interface for accessing all animal types
+"""
+
 import requests
 from random import randint
 

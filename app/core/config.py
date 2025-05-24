@@ -1,3 +1,7 @@
+"""
+A module that implements endpoints of the type /animal_type
+"""
+
 import os
 from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict

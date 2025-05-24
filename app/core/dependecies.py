@@ -1,3 +1,8 @@
+"""
+The module that defines the dependencies.
+Among them, connection to the database, dependence on their own services
+"""
+
 from collections.abc import AsyncGenerator
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from typing import Annotated

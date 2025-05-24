@@ -1,7 +1,12 @@
+"""
+A module describing animal schemas
+"""
+
 from enum import Enum
 from pydantic import BaseModel, Field, ConfigDict
 from uuid import UUID
 from datetime import datetime
+
 
 class AnimalSchema(BaseModel):
     """ A scheme of animal. """
@@ -18,7 +23,6 @@ class AnimalSchema(BaseModel):
     )
 
     model_config = ConfigDict(from_attributes=True)
-
 
 class AnimalDetailSchema(BaseModel):
     """ A scheme for showing animal fields. """
