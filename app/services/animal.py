@@ -15,7 +15,7 @@ from schemas.animal import (
     ImageSchema,
 )
 
-class AnimalsService:
+class AnimalService:
     def __init__(self, db_session: AsyncSession) -> None:
         self.animals_repository = AnimalsRepository(db_session= db_session)
         self.animal_receiver: AnimalReceiver = AnimalReceiver()

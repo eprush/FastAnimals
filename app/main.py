@@ -27,7 +27,18 @@ def get_application() -> FastAPI:
 
     application = FastAPI(
         **settings.model_dump(),
+        title="FastAnimals",
+        description="Приложение для получения случайных фотографий животных",
         separate_input_output_schemas=False,
+        contact={
+            "name": "eprush",
+            "url": "https://github.com/eprush",
+            "email": "pavlovich.er@phystech.edu"
+        },
+        license_info={
+            "name": "MIT",
+            "url": "https://opensource.org/license/mit"
+        },
     )
 
     application.include_router(routers)

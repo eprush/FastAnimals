@@ -7,7 +7,7 @@ from fastapi import APIRouter, status, Depends, HTTPException
 from fastapi.responses import FileResponse
 from uuid import UUID
 
-from services.animal import AnimalsService
+from services.animal import AnimalService
 from services.image import AnimalImage
 from core.dependecies import (
     get_image_service,
@@ -42,7 +42,7 @@ router = APIRouter(prefix="/history", tags=["Показ истории запр�
 )
 async def read_animal_by_uuid(
         uuid_code: UUID,
-        animal_service: AnimalsService = Depends(get_animals_service),
+        animal_service: AnimalService = Depends(get_animals_service),
         image_service: AnimalImage = Depends(get_image_service)
 ) -> FileResponse:
     """ Endpoint that receives a photo of an animal by uuid. """
@@ -76,7 +76,7 @@ async def read_animal_by_uuid(
     """
 )
 async def read_all_animals(
-        animal_service: AnimalsService = Depends(get_animals_service)
+        animal_service: AnimalService = Depends(get_animals_service)
 ) -> AllAnimalsSchema:
     """ The endpoint that gets the history of all requests. """
     animals = await animal_service.get_all_animals()
