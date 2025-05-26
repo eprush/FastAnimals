@@ -1,17 +1,35 @@
-# our base image
+# The 1 stage: Assembly
+FROM python:3.13 AS builder
+
+# Create a working directory /src for the source code and /venv for the virtual environment
+WORKDIR /src/
+
+# Manually create a virtual environment in /venv and install dependencies
+RUN python -m venv /venv \
+    && . /venv/bin/activate \
+    && pip install -r requirements.txt
+
+# The 2 stage: Final
 FROM python:3.13
 
-# change the working directory
-WORKDIR /app
+# Working directory for the application /src
+WORKDIR /src/
 
-COPY ./app/main.py /app
-COPY ./requirements.txt /app
+# Copy the installed virtual environment from the first stage into /venv
+COPY --from=builder /venv /venv
 
-# install dependencies inside the image
-RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+# Copy the rest of the application files into /src
+COPY . .
 
-# specify the port number the container should expose
-#EXPOSE 8000
+# Set environment variables to activate the virtual environment and add PYTHONPATH
+ENV VIRTUAL_ENV=/venv
+ENV PATH="/venv/bin:$PATH"
+ENV PYTHONPATH="/src"
 
-# run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+WORKDIR /src/app
+
+# Expose the necessary port
+EXPOSE 80
+
+# Run the application
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 80"]
