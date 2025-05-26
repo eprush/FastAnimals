@@ -10,7 +10,7 @@ from fastapi import Depends
 from asyncio import sleep
 
 from core.config import Settings, get_app_settings
-from services.animal import AnimalsService
+from services.animal import AnimalService
 from services.image import AnimalImage
 
 app_settings: Settings = get_app_settings()
@@ -41,10 +41,10 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         await db.close()
 
 
-async def get_animals_service(db: Annotated[AsyncSession, Depends(get_db)]) -> AnimalsService:
+async def get_animals_service(db: Annotated[AsyncSession, Depends(get_db)]) -> AnimalService:
     """Returns an instance of AnimalsService."""
     await sleep(1)
-    return AnimalsService(db_session=db)
+    return AnimalService(db_session=db)
 
 async def get_image_service() -> AnimalImage:
     await sleep(1)
