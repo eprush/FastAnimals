@@ -20,8 +20,6 @@ class Settings(BaseSettings):
     postgres_password: str = "example"
     pool_size: int = 20
 
-    table_name : str = "table.xlsx"
-
     cat_api_key: str = "peace_35mbejkg4uuVzdso0012"
 
     @property
