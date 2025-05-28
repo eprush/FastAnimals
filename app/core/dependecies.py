@@ -15,14 +15,8 @@ from services.image import AnimalImage
 
 app_settings: Settings = get_app_settings()
 
-
-pg_connection_string = (
-    f"postgresql+asyncpg://{app_settings.postgres_username}:{app_settings.postgres_password}@"
-    f"{app_settings.postgres_host}:{app_settings.postgres_port}/{app_settings.postgres_database}"
-)
-
 async_engine = create_async_engine(
-    pg_connection_string,
+    app_settings.url_asyncpg,
     pool_pre_ping=True,
     pool_size=app_settings.pool_size,
 )

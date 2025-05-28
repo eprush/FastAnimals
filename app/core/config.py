@@ -15,7 +15,7 @@ class Settings(BaseSettings):
 
     postgres_host: str = "localhost"
     postgres_port: str = "5432"
-    postgres_database: str = "fast_animals"
+    postgres_db: str = "fast_animals"
     postgres_username: str = "postgres"
     postgres_password: str = "example"
     pool_size: int = 20
@@ -23,6 +23,11 @@ class Settings(BaseSettings):
     table_name : str = "table.xlsx"
 
     cat_api_key: str = "peace_35mbejkg4uuVzdso0012"
+
+    @property
+    def url_asyncpg(self):
+        return (f"postgresql+asyncpg://{self.postgres_username}:{self.postgres_password}@"
+                f"{self.postgres_host}:{self.postgres_port}/{self.postgres_db}")
 
     model_config = SettingsConfigDict(env_file=os.getenv("ENV_FILE", ".env"))
 
