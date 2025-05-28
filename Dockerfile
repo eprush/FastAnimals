@@ -4,6 +4,8 @@ FROM python:3.13 AS builder
 # Create a working directory /src for the source code and /venv for the virtual environment
 WORKDIR /src/
 
+COPY requirements.txt .
+
 # Manually create a virtual environment in /venv and install dependencies
 RUN python -m venv /venv \
     && . /venv/bin/activate \
@@ -29,7 +31,7 @@ ENV PYTHONPATH="/src"
 WORKDIR /src/app
 
 # Expose the necessary port
-EXPOSE 80
+EXPOSE 8080
 
 # Run the application
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 80"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 8080"]
