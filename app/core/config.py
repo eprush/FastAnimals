@@ -13,11 +13,11 @@ class Settings(BaseSettings):
 
     environment: str = "production"
 
-    pg_host: str = "localhost"
-    pg_port: str = "5432"
-    pg_database: str = "fast_animals"
-    pg_username: str = "postgres"
-    pg_password: str = "example"
+    postgres_host: str = "localhost"
+    postgres_port: str = "5432"
+    postgres_database: str = "fast_animals"
+    postgres_username: str = "postgres"
+    postgres_password: str = "example"
     pool_size: int = 20
 
     table_name : str = "table.xlsx"

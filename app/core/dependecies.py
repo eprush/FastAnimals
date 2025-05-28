@@ -17,8 +17,8 @@ app_settings: Settings = get_app_settings()
 
 
 pg_connection_string = (
-    f"postgresql+asyncpg://{app_settings.pg_username}:{app_settings.pg_password}@"
-    f"{app_settings.pg_host}:{app_settings.pg_port}/{app_settings.pg_database}"
+    f"postgresql+asyncpg://{app_settings.postgres_username}:{app_settings.postgres_password}@"
+    f"{app_settings.postgres_host}:{app_settings.postgres_port}/{app_settings.postgres_database}"
 )
 
 async_engine = create_async_engine(
@@ -28,7 +28,10 @@ async_engine = create_async_engine(
 )
 
 async_session = async_sessionmaker(
-    async_engine, expire_on_commit=False, class_=AsyncSession, autoflush=False,
+    async_engine,
+    expire_on_commit=False,
+    class_=AsyncSession,
+    autoflush=False,
 )
 
 
