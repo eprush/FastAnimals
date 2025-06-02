@@ -1,13 +1,17 @@
 """
 The script that runs the application
 """
-
+import os.path
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 import logging
 
-from core.config import Settings, get_app_settings
+from core.config import (
+    Settings,
+    get_app_settings,
+    get_static_dir
+)
 from core.logging_config import setup_json_logging
 from endpoints.api import routers
 from core.exception_handlers import (
@@ -42,9 +46,10 @@ def get_application() -> FastAPI:
     )
 
     application.include_router(routers)
-
-    static_dir = Path("static")
-    if static_dir.is_dir():
+    STATIC_DIR = get_static_dir()
+    if not os.path.exists(STATIC_DIR):
+        os.mkdir(STATIC_DIR)
+        static_dir = Path("static")
         application.mount("/app/static", StaticFiles(directory="static"), name="static")
 
     application.add_exception_handler(HTTPException, http_exception_handler) # type: ignore
