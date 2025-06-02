@@ -4,8 +4,8 @@ A module describing a wrapper service around external animal access services
 
 import requests
 
-from integrations.abstract_animal import AbstractAnimalReceiver
-from integrations.real_animals import (
+from app.integrations.abstract_animal import AbstractAnimalReceiver
+from app.integrations.real_animals import (
     DogReceiver,
     CatReceiver,
     FoxReceiver,

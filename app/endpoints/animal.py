@@ -5,17 +5,17 @@ A module that implements endpoints of the type /{animal_type}
 
 from fastapi import APIRouter, status, Depends, HTTPException
 
-from core.dependecies import (
+from app.core.dependecies import (
     get_animals_service,
     get_image_service,
 )
-from services.animal import AnimalService
-from services.image import AnimalImage
-from schemas.animal import (
+from app.services.animal import AnimalService
+from app.services.image import AnimalImage
+from app.schemas.animal import (
     AnimalSchema,
     AnimalTypeSchema,
 )
-from schemas.problem import ProblemDetail
+from app.schemas.problem import ProblemDetail
 
 
 router = APIRouter(prefix="/animal", tags=["Скачивание фотографии животного определенного типа."])

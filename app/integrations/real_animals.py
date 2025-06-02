@@ -5,8 +5,8 @@ A module describing the implementations of an external animal service interface 
 import requests
 from random import randint
 
-from core.config import get_app_settings
-from integrations.abstract_animal import AbstractAnimalReceiver, Link, Headers
+from app.core.config import get_app_settings
+from app.integrations.abstract_animal import AbstractAnimalReceiver, Link, Headers
 
 
 class CatReceiver(AbstractAnimalReceiver):

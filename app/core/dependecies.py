@@ -9,9 +9,9 @@ from typing import Annotated
 from fastapi import Depends
 from asyncio import sleep
 
-from core.config import Settings, get_app_settings
-from services.animal import AnimalService
-from services.image import AnimalImage
+from app.core.config import Settings, get_app_settings
+from app.services.animal import AnimalService
+from app.services.image import AnimalImage
 
 app_settings: Settings = get_app_settings()
 

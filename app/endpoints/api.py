@@ -3,7 +3,7 @@ A module that creates routers with all endpoints
 """
 
 from fastapi import APIRouter
-from endpoints import animal, history
+from app.endpoints import animal, history
 
 routers = APIRouter()
 

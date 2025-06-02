@@ -6,7 +6,7 @@ import uuid
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.animal import Animal
+from app.models.animal import Animal
 
 
 class AnimalsRepository:

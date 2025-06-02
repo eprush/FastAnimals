@@ -7,7 +7,7 @@ from fastapi import Request, status
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 
-from schemas.problem import ProblemDetail
+from app.schemas.problem import ProblemDetail
 
 logger = logging.getLogger("FastAnimals")
 
