@@ -4,12 +4,12 @@ FROM python:3.13 AS builder
 # Create a working directory /src for the source code and /venv for the virtual environment
 WORKDIR /src/
 
-COPY requirements.txt .
+COPY requirements-base.txt .
 
 # Manually create a virtual environment in /venv and install dependencies
 RUN python -m venv /venv \
     && . /venv/bin/activate \
-    && pip install -r requirements.txt
+    && pip install -r requirements-base.txt
 
 # The 2 stage: Final
 FROM python:3.13
