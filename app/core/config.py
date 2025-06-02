@@ -46,6 +46,9 @@ def get_settings_no_cache() -> Settings:
     """Получение настроек без кеша."""
     return Settings()
 
-def get_static_dir() -> str:
-    BASE_DIR = Path(__file__).resolve().parent.parent
-    return os.path.join(BASE_DIR, "static")
+def get_base_dir() -> Path:
+    return Path(__file__).resolve().parent.parent
+
+def get_static_dir() -> Path:
+    BASE_DIR = get_base_dir()
+    return Path(os.path.join(BASE_DIR, "static"))
