@@ -54,6 +54,7 @@ You need to follow by http://localhost:8080/docs
     - 📁 core - configuration directory.
     - 📁 endpoints - endpoints and routers directory.
     - 📁 integrations - integrations with external API directory.
+    - 📁 migrations - migration versions directory.
     - 📁 models - ORM models directory.
     - 📁 repositories - repo directory.
     - 📁 schemas - schemas directory.
@@ -66,4 +67,5 @@ You need to follow by http://localhost:8080/docs
 - 📄 Dockerfile - file for docker image creation.
 - 📄 docker-compose.yaml - file for launch project correctly.
 - 📄 pyproject.toml - dependency description file.
+- 📄 alembic.ini - migration configuration file.
 - 📄 README.md - guides file.
