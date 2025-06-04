@@ -9,20 +9,40 @@ A test task is a small web service that returns a random photo of a cat, dog, or
 - Pillow
 - Docker
 - Alembic
+- pdm
 - RESTAPI
 
 ## Application Launch Guide
+First of all you should сlone this repository ``` git clone https://github.com/eprush/FastAnimals ```. 
+And after that create a file .env using the following example
+
+```
+ENVIRONMENT: str = "production"
+POSTGRES_HOST: str = "localhost"
+POSTGRES_PORT: str = "5432"
+POSTGRES_DB: str = "fast_animals"
+POSTGRES_USERNAME: str = "postgres"
+POSTGRES_PASSWORD: str = "example"
+POOL_SIZE: int = 20
+CAT_API_KEY: str = "peace_35mbejkg4uuVzdso0012"
+```
+
+There are two ways to launch a project:
 ### From terminal
 1. Clone this repository ``` git clone https://github.com/eprush/FastAnimals ```
-2. Install all dependencies ``` pip install -r requirements-dev.txt ``` or ``` pip install -r requirements-base.txt ```
-3. Run the app locally on your device ``` fastapi dev app/main.py ``` or ``` uvicorn app.main:app ```
+2. Install all dependencies ``` pip install pdm ``` and ``` pdm install ```
+3. Do needed migrations ``` alembic upgrade head ```
+4. Run the app locally on your device ``` uvicorn app.main:app --host 0.0.0.0 --port 8080 ```
 
 ### From Docker
 1. Clone this repository ``` git clone https://github.com/eprush/FastAnimals ```
 2. Launch the app on a container ``` docker compose up --build ```
 
+
 ## User's Guide
-To get an image, you need to send a request via the appropriate link. In response, the service will provide the processed image.
+
+### API link
+You need to follow by http://localhost:8080/docs
 
 ### Available Queries
 1. /animal/cat — request for a cat image.
@@ -47,6 +67,5 @@ To get an image, you need to send a request via the appropriate link. In respons
 - 📄 .gitignore - git settings file.
 - 📄 Dockerfile - file for docker image creation.
 - 📄 docker-compose.yaml - file for launch project correctly.
-- 📄 requirements-dev.txt - dependecies file for development.
-- 📄 requirements-base.txt - dependecies file for production.
+- 📄 pyproject.toml - dependency description file.
 - 📄 README.md - guides file.
