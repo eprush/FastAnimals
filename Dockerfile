@@ -28,7 +28,7 @@ ENV VIRTUAL_ENV=/venv
 ENV PATH="/venv/bin:$PATH"
 ENV PYTHONPATH="/src"
 
-WORKDIR /src/app
+WORKDIR /src/
 
 # Expose the necessary port
 EXPOSE 8080
