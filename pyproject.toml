@@ -1,0 +1,20 @@
+[project]
+name = "FastAnimals"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Egor Pavlovich", email = "pavlovich.er@phystech.edu"},
+]
+dependencies = ["alembic==1.16.1", "fastapi==0.115.12", "sqlalchemy==2.0.40", "uvicorn[standard]==0.34.2", "pillow==11.2.1", "asyncpg==0.30.0"]
+requires-python = ">=3.13"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.0",
+]
