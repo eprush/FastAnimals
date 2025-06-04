@@ -2,21 +2,19 @@
 A module that implements endpoints of the type /history and /history/static/{uuid_code}
 """
 
-
-from fastapi import APIRouter, status, Depends, HTTPException
+from fastapi import APIRouter, status, HTTPException
 from fastapi.responses import FileResponse
 from uuid import UUID
 
-from app.services.animal import AnimalService
-from app.services.image import AnimalImage
 from app.core.dependecies import (
-    get_image_service,
-    get_animals_service,
+    AnimalServiceDependence,
+    ImageServiceDependence,
 )
 from app.schemas.problem import ProblemDetail
 from app.schemas.animal import AllAnimalsSchema
 
 router = APIRouter(prefix="/history", tags=["Показ истории запросов."])
+
 
 @router.get(
     "/static/{uuid_code}",
@@ -42,8 +40,8 @@ router = APIRouter(prefix="/history", tags=["Показ истории запр�
 )
 async def read_animal_by_uuid(
         uuid_code: UUID,
-        animal_service: AnimalService = Depends(get_animals_service),
-        image_service: AnimalImage = Depends(get_image_service)
+        animal_service: AnimalServiceDependence,
+        image_service: ImageServiceDependence
 ) -> FileResponse:
     """ Endpoint that receives a photo of an animal by uuid. """
     animal = await animal_service.get_animal_by_uuid(uuid_code)
@@ -57,6 +55,7 @@ async def read_animal_by_uuid(
         media_type="image/jpg",
         filename=image_name
     )
+
 
 @router.get(
     "",
@@ -77,7 +76,7 @@ async def read_animal_by_uuid(
     """
 )
 async def read_all_animals(
-        animal_service: AnimalService = Depends(get_animals_service)
+        animal_service: AnimalServiceDependence
 ) -> AllAnimalsSchema:
     """ The endpoint that gets the history of all requests. """
     animals = await animal_service.get_all_animals()

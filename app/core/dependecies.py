@@ -38,7 +38,9 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         await db.close()
 
 
-async def get_animals_service(db: Annotated[AsyncSession, Depends(get_db)]) -> AnimalService:
+DatabaseDependence = Annotated[AsyncSession, Depends(get_db)]
+
+async def get_animal_service(db: DatabaseDependence) -> AnimalService:
     """Returns an instance of AnimalsService."""
     await sleep(1)
     return AnimalService(db_session=db)
@@ -46,3 +48,6 @@ async def get_animals_service(db: Annotated[AsyncSession, Depends(get_db)]) -> A
 async def get_image_service() -> AnimalImage:
     await sleep(1)
     return AnimalImage()
+
+AnimalServiceDependence = Annotated[AnimalService, Depends(get_animal_service)]
+ImageServiceDependence = Annotated[AnimalImage, Depends(get_image_service)]
