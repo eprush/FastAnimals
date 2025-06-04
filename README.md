@@ -29,14 +29,12 @@ CAT_API_KEY: str = "peace_35mbejkg4uuVzdso0012"
 
 There are two ways to launch a project:
 ### From terminal
-1. Clone this repository ``` git clone https://github.com/eprush/FastAnimals ```
-2. Install all dependencies ``` pip install pdm ``` and ``` pdm install ```
-3. Do needed migrations ``` alembic upgrade head ```
-4. Run the app locally on your device ``` uvicorn app.main:app --host 0.0.0.0 --port 8080 ```
+1. Install all dependencies ``` pip install pdm ``` and ``` pdm install ```
+2. Do needed migrations ``` alembic upgrade head ```
+3. Run the app locally on your device ``` uvicorn app.main:app --host 0.0.0.0 --port 8080 ```
 
 ### From Docker
-1. Clone this repository ``` git clone https://github.com/eprush/FastAnimals ```
-2. Launch the app on a container ``` docker compose up --build ```
+1. Launch the app on a container ``` docker compose up --build ```
 
 
 ## User's Guide
