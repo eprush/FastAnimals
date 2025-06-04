@@ -4,12 +4,14 @@ FROM python:3.13 AS builder
 # Create a working directory /src for the source code and /venv for the virtual environment
 WORKDIR /src/
 
-COPY requirements-base.txt .
+COPY pyproject.toml .
+COPY pdm.lock .
 
 # Manually create a virtual environment in /venv and install dependencies
 RUN python -m venv /venv \
     && . /venv/bin/activate \
-    && pip install -r requirements-base.txt
+    && pip install pdm \
+    && pdm install
 
 # The 2 stage: Final
 FROM python:3.13
