@@ -7,7 +7,7 @@ When trying to add a new function in the import, give it an alias as get_{animal
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.repositories.animals import AnimalsRepository
+from app.repositories.animals import AnimalRepository
 from app.integrations.common import AnimalReceiver
 from app.schemas.animal import (
     AnimalDetailSchema,
@@ -17,7 +17,7 @@ from app.schemas.animal import (
 
 class AnimalService:
     def __init__(self, db_session: AsyncSession) -> None:
-        self.animals_repository = AnimalsRepository(db_session= db_session)
+        self.animals_repository = AnimalRepository(db_session= db_session)
         self.animal_receiver: AnimalReceiver = AnimalReceiver()
 
     async def create_animal(self, *, animal_type: str) -> AnimalDetailSchema:
