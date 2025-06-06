@@ -3,7 +3,7 @@ A module that implements endpoints of the type /{animal_type}
 """
 
 
-from fastapi import APIRouter, status, Depends, HTTPException
+from fastapi import APIRouter, status, HTTPException
 
 from app.core.dependecies import (
     AnimalServiceDependence,
