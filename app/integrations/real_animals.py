@@ -16,7 +16,7 @@ class CatReceiver(AbstractAnimalReceiver):
         api_key = str(settings.cat_api_key)
 
         headers = {"content_type": "application/json", "api_key": api_key}
-        url = f"https://api.thecatapi.com/v1/images/search"
+        url = "https://api.thecatapi.com/v1/images/search"
         response = requests.get(url, headers=headers).json()
         cat_link = response[0].get("url", None) if response else None
         return cat_link, headers
