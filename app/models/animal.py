@@ -20,3 +20,7 @@ class Animal(Base):
     animal_type = Column(String, nullable=False)
     processed_image = Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    def __repr__(self):
+        return (f"Animal with ( \nid={self.id}, \nanimal_type={self.animal_type},"
+                f" \nprocessed_image={self.processed_image}, \ncreated_at{self.created_at} \n)")
