@@ -25,34 +25,29 @@ async_session = async_sessionmaker(
     autoflush=False,
 )
 
-@pytest.fixture(scope="module")
-def event_loop():
-    loop = asyncio.new_event_loop()
-    yield loop
-    loop.close()
-
 @pytest_asyncio.fixture(scope="module")
 async def session() -> AsyncGenerator[AsyncSession]:
     """Fixture for creating a new test session."""
     async with async_session() as s:
         yield s
 
+@pytest.fixture(scope="module")
+def repo(session):
+    return AnimalRepository(db_session=session)
+
 
 @pytest.mark.asyncio(loop_scope="module")
-async def test_can_create_any_animal(session, event_loop):
-    repo = AnimalRepository(db_session=session)
+async def test_can_create_any_animal(repo):
     animal = await repo.create_animal("capybara")
     print(animal)
     assert type(animal) is Animal
 
 @pytest.mark.asyncio(loop_scope="module")
-async def test_cannot_get_unexistent(session, event_loop):
-    repo = AnimalRepository(db_session=session)
+async def test_cannot_get_unexistent(repo):
     animal = await repo.get_animal_by_uuid(uuid.uuid4())
     assert animal is None
 
 @pytest.mark.asyncio(loop_scope="module")
-async def test_get_iterable_animals(session, event_loop):
-    repo = AnimalRepository(db_session=session)
+async def test_get_iterable_animals(repo):
     animals = await repo.get_all_animals()
     assert isinstance(animals, Iterable)
