@@ -6,12 +6,10 @@ import uuid
 from sqlalchemy import Integer, Column, DateTime, String, func
 from sqlalchemy.dialects.postgresql import UUID
 
-from app.core.config import Settings, get_app_settings
-from app.models.base import Base
+from app.models.base import BaseModel
 
-app_settings: Settings = get_app_settings()
 
-class Animal(Base):
+class Animal(BaseModel):
     """Animal model."""
 
     __tablename__ = "animal"
@@ -23,4 +21,4 @@ class Animal(Base):
 
     def __repr__(self):
         return (f"Animal with ( \nid={self.id}, \nanimal_type={self.animal_type},"
-                f" \nprocessed_image={self.processed_image}, \ncreated_at{self.created_at} \n)")
+                f" \nprocessed_image={self.processed_image} \n)")

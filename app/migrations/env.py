@@ -4,7 +4,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from app.core.config import get_settings_no_cache
-from app.models.base import Base
+from app.models.base import BaseModel
 from app.models.animal import * #noqa
 
 app_settings = get_settings_no_cache()
@@ -21,7 +21,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # for 'autogenerate' support
-target_metadata = Base.metadata
+target_metadata = BaseModel.metadata
 
 
 def run_migrations_offline() -> None:
