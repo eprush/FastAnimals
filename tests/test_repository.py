@@ -7,7 +7,7 @@ import pytest_asyncio
 import pytest
 
 from app.core.config import Settings, get_settings_no_cache
-from app.repositories.animals import AnimalRepository
+from app.repositories.animals import SQLAlchemyAnimalRepository
 from app.models.animal import Animal
 
 app_settings: Settings = get_settings_no_cache()
@@ -33,21 +33,21 @@ async def session() -> AsyncGenerator[AsyncSession]:
 
 @pytest.fixture(scope="module")
 def repo(session):
-    return AnimalRepository(db_session=session)
+    return SQLAlchemyAnimalRepository(db_session=session)
 
 
 @pytest.mark.asyncio(loop_scope="module")
 async def test_can_create_any_animal(repo):
-    animal = await repo.create_animal("capybara")
+    animal = await repo.add_by_name("capybara")
     print(animal)
     assert type(animal) is Animal
 
 @pytest.mark.asyncio(loop_scope="module")
 async def test_cannot_get_unexistent(repo):
-    animal = await repo.get_animal_by_uuid(uuid.uuid4())
+    animal = await repo.get_by_uuid(uuid.uuid4())
     assert animal is None
 
 @pytest.mark.asyncio(loop_scope="module")
 async def test_get_iterable_animals(repo):
-    animals = await repo.get_all_animals()
+    animals = await repo.get_all()
     assert isinstance(animals, Iterable)

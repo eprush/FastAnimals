@@ -10,30 +10,31 @@ from app.repositories.asbtract_repository import AbstractRepository
 from app.models.animal import Animal
 
 
-class AnimalRepository:
+class SQLAlchemyAnimalRepository(AbstractRepository):
+    Model = Animal
     def __init__(self, db_session: AsyncSession) -> None:
         self.db_session = db_session
 
-    async def create_animal(self, animal_type: str) -> Animal:
+    async def add_by_name(self, name: str) -> Model:
         """ A method for creating a сertain type of animal in the database. """
-        statement = insert(Animal).values(
+        statement = insert(self.Model).values(
             processed_image=uuid.uuid4(),
-            animal_type=animal_type,
-        ).returning(Animal)
+            animal_type=name,
+        ).returning(self.Model)
         result = await self.db_session.execute(statement)
         new_record = result.scalars().one()
         await self.db_session.commit()
 
         return new_record
 
-    async def get_animal_by_uuid(self, uuid_code: uuid.UUID) -> Animal | None:
+    async def get_by_uuid(self, uuid_code: uuid.UUID) -> Model | None:
         """ Method for getting an animal by uuid. """
-        statement = select(Animal).where(Animal.processed_image == uuid_code) # type error
+        statement = select(self.Model).where(Animal.processed_image == uuid_code) # type error
         result = await self.db_session.execute(statement)
         return result.scalars().one_or_none()
 
-    async def get_all_animals(self) -> tuple[Animal, ...]:
+    async def get_all(self) -> tuple[Model, ...]:
         """ Method for creating a query history file. """
-        statement = select(Animal)
+        statement = select(self.Model)
         result = await self.db_session.execute(statement)
         return tuple(result.scalars().all())
