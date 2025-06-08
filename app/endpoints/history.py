@@ -15,16 +15,24 @@ from app.schemas.animal import AllAnimalsSchema
 
 router = APIRouter(prefix="/history", tags=["Показ истории запросов."])
 
-
-@router.get(
-    "/static/{uuid_code}",
-    status_code=status.HTTP_200_OK,
-    responses={
-        200: {
-            "model": AllAnimalsSchema,
-            "description": "Приложение доступно и работает.",
-            "content": {"image/jpg": {}},
-        },
+example_responses_by_uuid = {
+    200: {
+        "description": "Метод доступен и работает.",
+        "content": {
+            "image/jpg": {
+                "examples": {
+                    "correct": {
+                        "value": {
+                            "accept-ranges": "bytes",
+                            "animal_type": "cat",
+                            "filename": "124a96c9-102d-4d49-8812-7dccc4d15f98.jpg",
+                            "last-modified": "Sun,08 Jun 2025 16:12:01 GMT",
+                        }
+                    }
+                }
+            }
+        }
+    },
         404: {
             "model": ProblemDetail,
             "description": "Неверный uuid-код.",
@@ -32,7 +40,14 @@ router = APIRouter(prefix="/history", tags=["Показ истории запр�
         500: {
             "model": ProblemDetail,
             "description": "Внутренняя ошибка сервера."},
-    },
+    }
+
+
+
+@router.get(
+    "/static/{uuid_code}",
+    status_code=status.HTTP_200_OK,
+    responses=example_responses_by_uuid,
     response_class=FileResponse,
     description="""
     Эндпоинт, получающий фотографию животного по uuid.
