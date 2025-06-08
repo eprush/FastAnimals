@@ -50,11 +50,13 @@ async def read_animal_by_uuid(
 
     image_path = image_service.get_image_path(animal.processed_image)
     image_name = image_service.get_image_name(animal.processed_image)
-    return FileResponse(
+    response = FileResponse(
         path=image_path,
         media_type="image/jpg",
         filename=image_name
     )
+    response.headers["animal_type"] = animal.animal_type
+    return response
 
 
 @router.get(
