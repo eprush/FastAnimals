@@ -6,6 +6,7 @@ import uuid
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.repositories.asbtract_repository import AbstractRepository
 from app.models.animal import Animal
 
 

@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.repositories.animals import AnimalRepository
 from app.integrations.common import AnimalReceiver
+from app.repositories.asbtract_repository import AbstractRepository
 from app.schemas.animal import (
     AnimalDetailSchema,
     AllAnimalsSchema,
