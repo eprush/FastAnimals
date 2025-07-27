@@ -4,8 +4,9 @@ A module that implements endpoints of the type /animal_type
 
 import os
 from functools import lru_cache
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 
 class Settings(BaseSettings):
@@ -23,6 +24,9 @@ class Settings(BaseSettings):
     postgres_test_db: str = "test"
 
     cat_api_key: str = "peace_35mbejkg4uuVzdso0012"
+
+    email_address: str = "your_email@domain.com"
+    email_password: str = "your_password"
 
     @property
     def url_asyncpg(self):
