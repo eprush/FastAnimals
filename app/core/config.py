@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     email_address: str = "your_email@domain.com"
     email_password: str = "your_password"
 
+    celery_broker_url: str = "redis://redis:1234/5"
+    celery_result_backend: str = "redis://redis:1234/5"
+
     @property
     def url_asyncpg(self):
         return (f"postgresql+asyncpg://{self.postgres_username}:{self.postgres_password}@"
@@ -51,7 +54,6 @@ def get_app_settings() -> Settings:
 
     """
     return Settings()
-
 
 def get_settings_no_cache() -> Settings:
     """Получение настроек без кеша."""
