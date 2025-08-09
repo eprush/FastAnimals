@@ -9,6 +9,7 @@ services:
       - ./.env
     depends_on:
       - db
+      - redis
 
   db:
     image: postgres:17
@@ -22,6 +23,21 @@ services:
       - POSTGRES_USERNAME=${POSTGRES_USERNAME}
     ports:
       - "5432:5432"
+
+  worker:
+    build: .
+    command: celery -A app.core.worker_config.celery worker --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+    depends_on:
+      - web
+      - redis
+
+  redis:
+    image: redis:7
 
 
 volumes:
