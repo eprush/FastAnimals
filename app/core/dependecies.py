@@ -39,13 +39,16 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 DatabaseDependence = Annotated[AsyncSession, Depends(get_db)]
 
+
 async def get_animal_service(db: DatabaseDependence) -> AnimalService:
     """Returns an instance of AnimalsService."""
     return AnimalService(db_session=db)
 
+
 async def get_image_service() -> AnimalImageService:
     """Returns an instance of AnimalImageService."""
     return AnimalImageService()
+
 
 async def get_email_service() -> EmailService:
     """Returns an instance of EmailService."""
@@ -54,6 +57,7 @@ async def get_email_service() -> EmailService:
         from_email=app_settings.email_address,
         password=app_settings.email_password,
     )
+
 
 AnimalServiceDependence = Annotated[AnimalService, Depends(get_animal_service)]
 ImageServiceDependence = Annotated[AnimalImageService, Depends(get_image_service)]
