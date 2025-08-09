@@ -26,8 +26,6 @@ class AnimalImageService:
     def save_image(data: bytes, *, name: UUID) -> str:
         """ A method for saving the image. """
         image_path = AnimalImageService.get_image_path(name)
-        #image = Image.frombytes("L", (3, 2), data) # how to get image sizes tuple
-        #image.save(filepath)
         with open(image_path, "wb") as file:
             file.write(data)
         return image_path
@@ -36,12 +34,12 @@ class AnimalImageService:
     def blur(path) -> None:
         """ A method for blurring photo with {path}. """
         with Image.open(path) as image:
-            image.filter(filter=ImageFilter.BLUR)
+            image.convert("RGB").filter(filter=ImageFilter.BLUR)
         return
 
     @staticmethod
     def contour(path) -> None:
         """ A method for contouring photo with {path}. """
         with Image.open(path) as image:
-            image.filter(filter=ImageFilter.CONTOUR)
+            image.convert("RGB").filter(filter=ImageFilter.CONTOUR)
         return
