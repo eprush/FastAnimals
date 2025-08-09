@@ -9,7 +9,7 @@ dependencies = [
     "alembic==1.16.1", "fastapi==0.115.12", "sqlalchemy==2.0.40", "uvicorn[standard]==0.34.2",
     "pillow==11.2.1", "asyncpg==0.30.0", "pydantic-settings==2.9.1", "openpyxl==3.1.5", "build==1.2.2.post1",
     "python-json-logger==3.3.0", "python-multipart==0.0.20", "setuptools==80.9.0", "certifi==2025.4.26",
-    "dnspython==2.7.0", "pydantic[email]>=2.11.7", "typing-inspection==0.4.0", "typing-extensions==4.13.2", "requests==2.32.3", "black>=25.1.0"
+    "dnspython==2.7.0", "pydantic[email]>=2.11.7", "typing-inspection==0.4.0", "typing-extensions==4.13.2", "requests==2.32.3", "black>=25.1.0", "celery>=5.5.3", "redis>=6.4.0"
 ]
 requires-python = ">=3.13"
 readme = "README.md"
