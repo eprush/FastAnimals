@@ -1,14 +1,16 @@
 # FastAnimals
-A test task is a small web service that returns a random photo of a cat, dog, or fox upon request, having previously processed it.
+This is a web service that returns a random photo of a cat, dog, or fox upon request, having previously processed it.
 
 ## Technology stack
 - Python >=3.13
 - FastAPI
 - SQLAlchemy
 - PostgreSQL
-- Pillow
+- Celery
+- Redis
 - Docker
 - Alembic
+- Pillow
 - pdm
 - RESTAPI
 
@@ -23,8 +25,13 @@ POSTGRES_PORT: str = "5432"
 POSTGRES_DB: str = "fast_animals"
 POSTGRES_USERNAME: str = "postgres"
 POSTGRES_PASSWORD: str = "example"
+POSTGRES_TEST_DB: str = "test_db"
 POOL_SIZE: int = 20
 CAT_API_KEY: str = "peace_35mbejkg4uuVzdso0012"
+EMAIL_ADDRESS: str = "your_email@domain.com"
+EMAIL_PASSWORD: str = "your_password"
+CELERY_BROKER_URL: str = "redis://redis:1234/5"
+CELERY_RESULT_BACKEND: str = "redis://redis:1234/5"
 ```
 
 There are two ways to launch a project:
@@ -60,6 +67,7 @@ You need to follow by http://localhost:8080/docs
     - 📁 schemas - schemas directory.
     - 📁 services - internal services directory.
     - 📁 static - images directory.
+    - 📁 tasks - background tasks directory.
     - 📄 main.py - launching script
 - 📄 LICENCE - licence file.
 - 📄 .env - environment file.
