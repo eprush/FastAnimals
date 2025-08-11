@@ -26,7 +26,7 @@ services:
 
   worker:
     build: .
-    command: celery -A app.core.worker_config.celery worker --loglevel=info
+    command: celery -A app.core.worker_config worker --loglevel=info
     volumes:
       - .:/app
     environment:
