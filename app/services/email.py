@@ -35,3 +35,11 @@ class EmailService:
             print("Письмо успешно отправлено!")
         except Exception as e:
             print(f"Произошла ошибка при отправке письма: {str(e)}")
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, EmailService):
+            return self._email_info == other._email_info
+        return False
+
+    __hash__ = None
+
